@@ -172,11 +172,61 @@ fetch('https://jsonplaceholder.typicode.com/comments')
 		console.log(err.message);
 	});
 
-function printComments() {
+const printComments = () => {
 	myComments.forEach((comment) => {
 		let newLi = document.createElement('li');
 		newLi.setAttribute('id', String(comment.postId));
 		newLi.textContent = `Commento di ${comment.name}: ${comment.body}`;
 		comments!.appendChild(newLi);
 	});
+};
+
+const mySum = (num1: number, num2: number, num3?: number): number => {
+	let total: number;
+	if (num3) {
+		total = num1 + num2 + num3;
+	} else {
+		total = num1 + num2;
+	}
+	return total;
+};
+
+console.log(mySum(4, 9));
+console.log(mySum(8, 2, 5));
+console.log(mySum('Pippo', 3)); // ERRORE! La funzione viene eseguita comunque, ma TS segnala che il primo parametro dovrebbe essere un number
+
+// GENERICS
+// Quando il tipo di un dato (generalmente nelle interface) non è conosciuto in partenza, si usa il generic <T> per indicare che quel tipo sarà definito dall'oggetto che userà la interface
+
+interface IEpicodeStudent<T> {
+	name: string;
+	surname: string;
+	area: T;
 }
+
+const student1: IEpicodeStudent<string> = {
+	name: 'Mario',
+	surname: 'Rossi',
+	area: 'Italia',
+};
+
+console.log(student1);
+
+const student2: IEpicodeStudent<{ state: string; countryCode: number }> = {
+	name: 'Dario',
+	surname: 'Del Giudice',
+	area: {
+		state: 'Italia',
+		countryCode: 80055,
+	},
+};
+
+console.log(student2);
+
+const student3: IEpicodeStudent<T> = {
+	name: 'Aldo',
+	surname: 'Bianchi',
+	area: 25,
+};
+
+console.log(student3);

@@ -139,11 +139,45 @@ fetch('https://jsonplaceholder.typicode.com/comments')
     .catch((err) => {
     console.log(err.message);
 });
-function printComments() {
+const printComments = () => {
     myComments.forEach((comment) => {
         let newLi = document.createElement('li');
         newLi.setAttribute('id', String(comment.postId));
         newLi.textContent = `Commento di ${comment.name}: ${comment.body}`;
         comments.appendChild(newLi);
     });
-}
+};
+const mySum = (num1, num2, num3) => {
+    let total;
+    if (num3) {
+        total = num1 + num2 + num3;
+    }
+    else {
+        total = num1 + num2;
+    }
+    return total;
+};
+console.log(mySum(4, 9));
+console.log(mySum(8, 2, 5));
+console.log(mySum('Pippo', 3)); // ERRORE! La funzione viene eseguita comunque, ma TS segnala che il primo parametro dovrebbe essere un number
+const student1 = {
+    name: 'Mario',
+    surname: 'Rossi',
+    area: 'Italia',
+};
+console.log(student1);
+const student2 = {
+    name: 'Dario',
+    surname: 'Del Giudice',
+    area: {
+        state: 'Italia',
+        countryCode: 80055,
+    },
+};
+console.log(student2);
+const student3 = {
+    name: 'Aldo',
+    surname: 'Bianchi',
+    area: 25,
+};
+console.log(student3);
