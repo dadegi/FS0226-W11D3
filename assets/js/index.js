@@ -70,3 +70,80 @@ const courseType = {
         endDate: '',
     },
 };
+const arrayOfBooks = [
+    {
+        title: 'Atomic Habits',
+        author: 'James Clear',
+        year: 2018,
+        read: false,
+    },
+    {
+        title: 'Il nome della Rosa',
+        author: 'Umberto Eco',
+        year: 1980,
+        read: true,
+        pages: 350,
+    },
+    {
+        title: 'Oceano Mare',
+        author: 'Alessandro Baricco',
+        year: 1996,
+        read: true,
+        pages: 200,
+    },
+];
+console.log(arrayOfBooks);
+const booksList = document.querySelector('#booksList');
+arrayOfBooks.forEach((book) => {
+    let read;
+    let pagesNumber;
+    if (book.read === true) {
+        read = 'già letto';
+    }
+    else {
+        read = 'da leggere';
+    }
+    if (book.pages) {
+        pagesNumber = `numero di pagine: ${book.pages},`;
+    }
+    else {
+        pagesNumber = '';
+    }
+    let newLi = document.createElement('li');
+    newLi.textContent = `${book.title} di ${book.author}, pubblicato nel ${book.year}, ${pagesNumber} ${read}`;
+    booksList.appendChild(newLi);
+});
+const myComments = [];
+const comments = document.querySelector('#comments');
+fetch('https://jsonplaceholder.typicode.com/comments')
+    .then((response) => {
+    if (response.ok) {
+        return response.json();
+    }
+    else {
+        throw new Error('Errore nella fetch');
+    }
+})
+    .then((data) => {
+    for (let i = 0; i < 50; i++) {
+        myComments.push({
+            postId: data[i].postId,
+            name: data[i].name,
+            email: data[i].email,
+            body: data[i].body,
+        });
+    }
+    console.log(myComments);
+    printComments();
+})
+    .catch((err) => {
+    console.log(err.message);
+});
+function printComments() {
+    myComments.forEach((comment) => {
+        let newLi = document.createElement('li');
+        newLi.setAttribute('id', String(comment.postId));
+        newLi.textContent = `Commento di ${comment.name}: ${comment.body}`;
+        comments.appendChild(newLi);
+    });
+}

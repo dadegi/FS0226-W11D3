@@ -81,3 +81,102 @@ const courseType = {
 		endDate: '',
 	},
 };
+
+// INTERFACCE
+// Modelli per oggetti, sul tipo delle classi (ma non supportano metodi), estendibili esattamente come le classi, più leggere e veloci delle classi stesse. Le interfacce sono rigorose, gli oggetti costruiti sul modello delle interfacce DEVONO rispettare la struttura dell'interfaccia. È una funzionalità propria di TS, infatti non viene compilata in JS.
+
+interface IBook {
+	title: string;
+	author: string;
+	year: number;
+	read: boolean;
+	pages?: number; // Con il punto interrogativo si definisce una proprietà facoltativa
+}
+
+const arrayOfBooks: IBook[] = [
+	{
+		title: 'Atomic Habits',
+		author: 'James Clear',
+		year: 2018,
+		read: false,
+	},
+	{
+		title: 'Il nome della Rosa',
+		author: 'Umberto Eco',
+		year: 1980,
+		read: true,
+		pages: 350,
+	},
+	{
+		title: 'Oceano Mare',
+		author: 'Alessandro Baricco',
+		year: 1996,
+		read: true,
+		pages: 200,
+	},
+];
+
+console.log(arrayOfBooks);
+const booksList = document.querySelector('#booksList');
+
+arrayOfBooks.forEach((book) => {
+	let read: string;
+	let pagesNumber: string;
+	if (book.read === true) {
+		read = 'già letto';
+	} else {
+		read = 'da leggere';
+	}
+	if (book.pages) {
+		pagesNumber = `numero di pagine: ${book.pages},`;
+	} else {
+		pagesNumber = '';
+	}
+	let newLi = document.createElement('li');
+	newLi.textContent = `${book.title} di ${book.author}, pubblicato nel ${book.year}, ${pagesNumber} ${read}`;
+	booksList!.appendChild(newLi);
+});
+
+// Esempio dell'utilizzo di un'interfaccia con una base dati
+interface IComment {
+	postId: number;
+	name: string;
+	email: string;
+	body: string;
+}
+
+const myComments: IComment[] = [];
+const comments = document.querySelector('#comments');
+
+fetch('https://jsonplaceholder.typicode.com/comments')
+	.then((response) => {
+		if (response.ok) {
+			return response.json();
+		} else {
+			throw new Error('Errore nella fetch');
+		}
+	})
+	.then((data: IComment[]) => {
+		for (let i = 0; i < 50; i++) {
+			myComments.push({
+				postId: data[i].postId,
+				name: data[i].name,
+				email: data[i].email,
+				body: data[i].body,
+			});
+		}
+		console.log(myComments);
+		printComments();
+	})
+	.catch((err) => {
+		console.log(err.message);
+	});
+
+function printComments() {
+	myComments.forEach((comment) => {
+		let newLi = document.createElement('li');
+		newLi.setAttribute('id', String(comment.postId));
+		newLi.textContent = `Commento di ${comment.name}: ${comment.body}`;
+		comments!.appendChild(newLi);
+	});
+}
